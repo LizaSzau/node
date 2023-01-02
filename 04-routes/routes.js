@@ -1,23 +1,6 @@
-const http = require('http')
 const fs = require('fs')
 
-/*
-function rqListener(req, res) {
-    console.log(req)
-}
-
-http.createServer(rqListener)
-*/
-
-/*
-http.createServer(function(req, res){
-    console.log(req)
-})
-*/
-
-const server = http.createServer((req, res) => {
-    // console.log(req)
-    // console.log(req.url, req.method, req.headers)
+const requestHandler = (req, res) => {
     const url = req.url
     const method = req.method
 
@@ -28,15 +11,15 @@ const server = http.createServer((req, res) => {
         res.write('</html>')
         return res.end()
     }
-
+    
     if (url === '/message' && method === 'POST') {
         const body = []
-
+    
         req.on('data', (chunk) => {
             console.log('Chunk: ' + chunk)
             body.push(chunk)
         })
-
+    
         req.on('end', () => {
             const parsedBody = Buffer.concat(body).toString()
             const message = parsedBody.split('=')[1]
@@ -52,17 +35,17 @@ const server = http.createServer((req, res) => {
             console.log('Message: ' + message)
         })
     }
+}
 
-    // res.setHeader('Content-Type', 'text/html');
-    // res.write('<html>')
-    // res.write('<h1>Liza is here!</h1>')
-    // res.write('</html>')
-    // res.end()
+// module.exports = requestHandler
 
-    console.log(url)
+// module.exports.handler = requestHandler
+// module.exports.someText = 'Liza coca'
 
-    // console.log(res)
-    // process.exit()
-})
+// exports.handler = requestHandler
+// exports.someText = 'Liza coca'
 
-server.listen(3000)
+module.exports = {
+    handler: requestHandler,
+    someText: 'Some hard coded text.'
+}
