@@ -1,0 +1,2 @@
+Exit from Node server:
+Ctrl + C
