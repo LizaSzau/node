@@ -1,2 +1,8 @@
 Exit from Node server:
 Ctrl + C
+
+$ npm init
+$ npm start
+$ npm run own-script-name
+$ npm install nodemon --save-dev
+$ npm install nodemon -g (global)
