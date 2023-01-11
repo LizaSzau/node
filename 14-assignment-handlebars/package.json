@@ -1,20 +1,18 @@
 {
-  "name": "08-routes",
+  "name": "14-assignment-handlebars",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.ja",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.20"
-  },
   "dependencies": {
     "body-parser": "^1.20.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "nodemon": "^2.0.20"
   }
 }
