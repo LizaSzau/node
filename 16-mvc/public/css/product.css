@@ -53,6 +53,8 @@
 .card__actions {
       padding: 1rem;
       text-align: center;
+      display: flex;
+      justify-content: center;
 }
   
 .card__actions button,
@@ -74,4 +76,22 @@
 .btn:active {
     background-color: midnightblue;
     color: white;
+}
+
+.card__actions a {
+    text-decoration: none;
+}
+
+main.detail {
+    max-width: 600px;
+    text-align: center;
+}
+
+main.detail img {
+    width: 100%;
+    height: auto;
+}
+
+main.detail h2 {
+    padding: 20px 0 10px 0;
 }

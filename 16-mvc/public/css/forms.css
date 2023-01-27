@@ -13,12 +13,16 @@
     display: block;
 }
 
-.form-control input {
+.form-control input, .form-control textarea {
     border: 1px solid midnightblue;
     border-radius: 2px;
     font: inherit;
     padding: 6px;
     width: 100%;
+}
+
+.form-control textarea {
+    height: 4em;
 }
 
 button {
