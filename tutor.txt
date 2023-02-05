@@ -6,3 +6,11 @@ $ npm start
 $ npm run own-script-name
 $ npm install nodemon --save-dev
 $ npm install nodemon -g (global)
+
+$ sudo npm install -g sequelize-cli
+$ npx sequelize init
+$ npx sequelize-cli migration:create
+$ npx sequelize-cli db:migrate
+
+$ npx sequelize seed:generate --name create-user
+$ npx sequelize db:seed:all
