@@ -2,10 +2,11 @@ const mongoDb = require('mongodb')
 const Product = require("../models/product")
 
 const objectId = mongoDb.objectId
+const collectionProducts = 'products'
 
 exports.getAdminProducts = (req, res, next) => {
     Product
-        .fetchAll()
+        .fetchAll(collectionProducts)
         .then(data => {
             res.render('admin/product-list', {
                 prods: data, 
@@ -25,14 +26,15 @@ exports.getAddProduct = (req, res, next) => {
 }
 
 exports.postAddProduct = (req, res, next) => {
+    const userId = req.user._id
     const title = req.body.title
     const imageUrl = req.body.imageUrl
     const price = req.body.price
     const description = req.body.description
-    const product = new Product(title, price, description, imageUrl)
+    const product = new Product(title, price, description, imageUrl, userId)
 
     product
-        .save()
+        .save('products')
         .then(result => {
             res.redirect('/admin/products')
         })
@@ -43,7 +45,7 @@ exports.getEditProduct = (req, res, next) => {
     const productId = req.params.productId
 
     Product
-        .findById(productId)
+        .findById(collectionProducts, productId)
         .then(product => {
             if (!product) {
                 return res.redirect('/admin/products')
@@ -61,14 +63,15 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
     const id = req.body.productId
+    const userId = req.user._id
     const title = req.body.title
     const imageUrl = req.body.imageUrl
     const price = req.body.price
     const description = req.body.description
-    const product = new Product(title, price, description, imageUrl, id)
+    const product = new Product(title, price, description, imageUrl, userId, id)
 
     product
-        .save()
+        .save('products')
         .then(result => {
             res.redirect('/admin/products')
         })
@@ -79,7 +82,7 @@ exports.postDeleteProduct = (req, res, next) => {
     const productId = req.body.productId
 
     Product
-        .deleteById(productId)
+        .deleteById(collectionProducts, productId)
         .then(result => {
             res.redirect('/admin/products')
         })

@@ -12,6 +12,11 @@ const shopRoutes = require ('./routes/shop')
 const Error404Controller = require ('./controllers/404')
 const app = express()
 
+app.use((req, res, next) =>{
+    console.log("--------new middleware");
+    next();
+});
+
 app.set('view engine', 'ejs')
 app.set('views', 'views') // default
 

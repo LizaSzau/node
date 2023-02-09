@@ -1,5 +1,5 @@
 const Product = require('../models/product')
-//const Order = require('../models/order')
+const collectionProducts = 'products'
 
 exports.getIndex = (req, res, next) => {
     res.render('shop/index', {
@@ -10,7 +10,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
     Product
-        .fetchAll()
+        .fetchAll(collectionProducts)
         .then(data => {
             res.render('shop/product-list', {
                 prods: data, 
@@ -24,7 +24,7 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId
     Product
-        .findById(productId)
+        .findById(collectionProducts, productId)
         .then(product => {
             if (!product) {
                 return res.redirect('/products')

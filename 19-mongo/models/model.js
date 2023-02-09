@@ -2,14 +2,14 @@ const mongoDb = require('mongodb')
 const getDb = require('../utils/database').getDb
 
 class Model {
-    save() {
+    save(collection) {
         const db = getDb()
         let dbOp
 
         if (this._id) {
-            dbOp = db.collection('users').updateOne({ _id: this._id }, { $set: this })
+            dbOp = db.collection(collection).updateOne({ _id: this._id }, { $set: this })
         } else {
-            dbOp = db.collection('users').insertOne(this)
+            dbOp = db.collection(collection).insertOne(this)
         }
 
         return dbOp
@@ -19,41 +19,41 @@ class Model {
             .catch(err => console.log(err))
     }
 
-    static deleteById(id) {
+    static deleteById(collection, id) {
         const db = getDb()
 
         return db
-            .collection('users')
+            .collection(collection )
             .deleteOne({ _id: new mongoDb.ObjectId(id)  })
             .then(result => {
-                console.log('User deleted!')
+                console.log(result)
             })
             .catch(err => console.log(err))
     }
 
-    static fetchAll() {
+    static fetchAll(collection) {
         const db = getDb()
         return db
-            .collection('users')
+            .collection(collection )
             .find()
             .toArray()
-            .then(users => {
-                return users
+            .then(data => {
+                return data
             })
             .catch(err => HTMLFormControlsCollection.log(err))
     }
 
-    static findById(id) {
+    static findById(collection, id) {
         const db = getDb()
         return db
-            .collection('users')
+            .collection(collection )
             .findOne({_id: new mongoDb.ObjectId(id) })
-            .then(users => {
-                console.log(users)
-                return users
+            .then(data => {
+                console.log(data)
+                return data
             })
             .catch(err => HTMLFormControlsCollection.log(err))
     }
 }
 
-module.exports = User
+module.exports = Model
