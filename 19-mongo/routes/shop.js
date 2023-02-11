@@ -10,7 +10,7 @@ router.get('/', shopController.getIndex)
 router.get('/products', shopController.getProducts)
 
 router.get('/product/:productId', shopController.getProduct)
-/*
+
 router.get('/cart', shopController.getCart)
 
 router.post('/add-to-cart', shopController.postCart)
@@ -20,5 +20,5 @@ router.post('/cart-delete-product', shopController.postCartDeleteProduct)
 router.get('/orders', shopController.getOrders)
 
 router.post('/create-order', shopController.postCreateOrder)
-*/
+
 module.exports = router
