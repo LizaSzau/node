@@ -1,7 +1,7 @@
 .order__item-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 2px 0 2px 20px;
   margin: auto;
   width: 40rem;
   max-width: 90%;

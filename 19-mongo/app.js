@@ -25,7 +25,7 @@ app.use((req, res, next) => {
     // user.save('users')
     User.findById('users', '63e5565434030e50c63da197')
         .then(user => {
-            req.user = new User(user.name, user.email, user._id, user.cart)
+            req.user = new User(user.username, user.email, user._id, user.cart)
             next();
         })
         .catch(err => console.log(err))
