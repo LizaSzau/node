@@ -36,6 +36,7 @@ app.use('/', shopRoutes)
 app.use(Error404Controller.get404)
 
 mongoose.set('strictQuery', true)
+
 mongoose
     .connect(
         'mongodb+srv://vividdarer:31szaui93@nodeshop.louxudq.mongodb.net/?retryWrites=true&w=majority',

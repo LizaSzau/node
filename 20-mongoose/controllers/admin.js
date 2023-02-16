@@ -34,7 +34,7 @@ exports.postAddProduct = (req, res, next) => {
 exports.getAdminProducts = (req, res, next) => {
     Product
         .find()
-        .select('title, price, imageUrl, description, -_id')
+        // .select('title price imageUrl description -_id')
         .populate('userId', 'name email')
         .then(data => {
             res.render('admin/product-list', {
@@ -48,14 +48,12 @@ exports.getAdminProducts = (req, res, next) => {
 
 exports.getEditProduct = (req, res, next) => {
     const productId = req.params.productId
-
     Product
         .findById(productId)
         .then(product => {
             if (!product) {
                 return res.redirect('/admin/products')
             }
-
             res.render('admin/edit-product', {
                 product: product, 
                 pageTitle: 'Edit Product',
@@ -68,7 +66,7 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
     const id = req.body.productId
-    //const userId = req.user._id
+    // const userId = req.user._id
     const title = req.body.title
     const imageUrl = req.body.imageUrl
     const price = req.body.price
