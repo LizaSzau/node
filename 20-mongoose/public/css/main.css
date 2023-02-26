@@ -9,8 +9,33 @@ h1 {
     padding: 20px 0 40px 0;
 }
 
+button {
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+
 main {
     padding: 1.5rem
+}
+
+.user-message {
+    color: white;
+    border-radius: 4px;
+    padding: 1.5rem;
+}
+
+.user-message.user-message__error {
+    background-color: crimson;
+}
+
+.user-message.user-message__success {
+    background-color: springgreen;
+}
+
+.user-data {
+    color: cadetblue;
+    padding-right: 20px;
 }
 
 .main-header {
@@ -23,6 +48,7 @@ main {
     height: 100%;
     display: none;
     align-items: center;
+    justify-content: space-between;
     padding: 0 0.5rem;
 }
 
@@ -55,6 +81,11 @@ main {
     object-fit: cover;
 }
 
+button.logout {
+    background: none;
+    color: white;
+    padding-right: 20px;
+}
 
 .mobile-nav {
     width: 30rem;
@@ -68,41 +99,43 @@ main {
     padding: 2rem 1rem 1rem 2rem;
     transform: translateX(-100%);
     transition: transform 0.3s ease-out;
-  }
+}
   
-  .mobile-nav.open {
+.mobile-nav.open {
     transform: translateX(0);
-  }
+}
   
-  .mobile-nav__item-list {
+.mobile-nav__item-list {
     list-style: none;
     display: flex;
     flex-direction: column;
     margin: 0;
     padding: 0;
-  }
+}
   
-  .mobile-nav__item {
+.mobile-nav__item {
     margin: 1rem;
     padding: 0;
-  }
+}
   
-  .mobile-nav__item a {
+.mobile-nav__item a,
+.mobile-nav__item button {
     text-decoration: none;
     color: black;
     font-size: 1.5rem;
     padding: 0.5rem 2rem;
-  }
+}
   
-  .mobile-nav__item a:active,
-  .mobile-nav__item a:hover,
-  .mobile-nav__item a.active {
+.mobile-nav__item button:hover,
+.mobile-nav__item a:active,
+.mobile-nav__item a:hover,
+.mobile-nav__item a.active {
     background: midnightblue;
     color: white;
     border-radius: 3px;
-  }
-  
-  #side-menu-toggle {
+}
+
+#side-menu-toggle {
     border: none;
     font: inherit;
     padding: 0.5rem;
@@ -111,18 +144,18 @@ main {
     color: white;
     cursor: pointer;
     height: 100%;
-  }
+}
   
-  #side-menu-toggle:focus {
+#side-menu-toggle:focus {
     outline: none;
-  }
+}
   
-  #side-menu-toggle:active,
-  #side-menu-toggle:hover {
+#side-menu-toggle:active,
+#side-menu-toggle:hover {
     color: springgreen;
-  }
+}
   
-  .backdrop {
+.backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -131,15 +164,15 @@ main {
     background: rgba(0, 0, 0, 0.5);
     z-index: 5;
     display: none;
-  }
+}
 
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
     .main-header__nav {
-      display: flex;
+        display: flex;
     }
   
     #side-menu-toggle {
-      display: none;
+        display: none;
     }
-  }
+}
   

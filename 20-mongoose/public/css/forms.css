@@ -13,6 +13,11 @@
     display: block;
 }
 
+.form-control input.invalid, .form-control textarea.invalid {
+    background-color: rgba(220, 20, 60, 0.255);
+    text-align: left;
+}
+
 .form-control input, .form-control textarea {
     border: 1px solid midnightblue;
     border-radius: 2px;

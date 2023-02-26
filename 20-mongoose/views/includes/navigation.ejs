@@ -9,18 +9,40 @@
             <li class="main-header__item">
                 <a href="/products" class="<%= path === '/products' ? 'active' : '' %>">Products</a>
             </li>
-            <li class="main-header__item">
-                <a href="/cart" class="<%= path === '/cart' ? 'active' : '' %>">Cart</a>
-            </li>
-            <li class="main-header__item">
-                <a href="/orders" class="<%= path === '/orders' ? 'active' : '' %>">Orders</a>
-            </li>
-            <li class="main-header__item">
-                <a href="/admin/add-product" class="<%= path === '/admin/add-product' ? 'active' : '' %>">Add Product</a>
-            </li>
-            <li class="main-header__item">
-                <a href="/admin/products" class="<%= path === '/admin/products' ? 'active' : '' %>">Admin Products</a>
-            </li>
+            <% if (isAuthenticated) { %>
+                <li class="main-header__item">
+                    <a href="/cart" class="<%= path === '/cart' ? 'active' : '' %>">Cart</a>
+                </li>
+                <li class="main-header__item">
+                    <a href="/orders" class="<%= path === '/orders' ? 'active' : '' %>">Orders</a>
+                </li>        
+                <li class="main-header__item">
+                    <a href="/admin/add-product" class="<%= path === '/admin/add-product' ? 'active' : '' %>">Add Product</a>
+                </li>
+                <li class="main-header__item">
+                    <a href="/admin/products" class="<%= path === '/admin/products' ? 'active' : '' %>">Admin Products</a>
+                </li>
+            <% } %>
+        </ul>
+        <ul class="main-header__item-list">
+            <% if (isAuthenticated) { %> 
+                <li class="main-header__item user-data">
+                    <%= userName %> - <%= userEmail %>
+                </li>
+                <li class="main-header__item">
+                    <form action="/logout" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="logout">Logout</button>
+                    </form>
+                </li>
+            <% } else { %>    
+                <li class="main-header__item">
+                    <a href="/login" class="<%= path === '/login' ? 'active' : '' %>">Login</a>
+                </li>
+                <li class="main-header__item">
+                    <a href="/signup" class="<%= path === '/signup' ? 'active' : '' %>">Signup</a>
+                </li>
+            <% } %>
         </ul>
     </nav>
 </header>
@@ -33,6 +55,7 @@
             <li class="mobile-nav__item">
                 <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
             </li>
+            <% if (isAuthenticated) { %> 
             <li class="mobile-nav__item">
                 <a class="<%= path === '/cart' ? 'active' : '' %>" href="/cart">Cart</a>
             </li>
@@ -47,5 +70,22 @@
                 <a class="<%= path === '/admin/products' ? 'active' : '' %>" href="/admin/products">Admin Products
                 </a>
             </li>
+            <% } %>
+            <hr>
+            <% if (isAuthenticated) { %> 
+                <li class="mobile-nav__item">
+                    <form action="/logout" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="logout">Logout</button>
+                    </form>
+                </li>
+            <% } else { %>    
+                <li class="mobile-nav__item">
+                    <a href="/login">Login</a>
+                </li>
+                <li class="mobile-nav__item">
+                    <a href="/signup">Signup</a>
+                </li>
+            <% } %>
         </ul>
 </nav>
