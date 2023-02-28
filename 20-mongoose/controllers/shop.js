@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const Product = require("../models/product")
 const Order = require("../models/order")
 
@@ -18,7 +21,11 @@ exports.getProducts = (req, res, next) => {
                 path: '/products',
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.getProduct = (req, res, next) => {
@@ -36,7 +43,11 @@ exports.getProduct = (req, res, next) => {
                 path: '/products',
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.getCart = (req, res, next) => {
@@ -49,7 +60,11 @@ exports.getCart = (req, res, next) => {
                 path: '/cart',
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.postCart = (req, res, next) => {
@@ -61,7 +76,11 @@ exports.postCart = (req, res, next) => {
         .then(result => {
             res.redirect('/cart')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
@@ -72,7 +91,11 @@ exports.postCartDeleteProduct = (req, res, next) => {
         .then(result => {
             res.redirect('/cart')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.getOrders = (req, res, next) => {
@@ -86,7 +109,11 @@ exports.getOrders = (req, res, next) => {
                 orders: orders,
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }
 
 exports.postCreateOrder = (req, res, next) => {
@@ -111,5 +138,47 @@ exports.postCreateOrder = (req, res, next) => {
         .then(result => {
             res.redirect('/orders')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
+}
+
+exports.getInvoice = (req, res, next) => {
+    const orderId = req.params.orderId
+    //const invoiceName = 'invoice-' + orderId + '.pdf'
+    const invoiceName = 'bill.pdf'
+    const invoicePath = path.join('data', 'invoices', invoiceName)
+
+    Order.findById(orderId)
+        .then(order => {
+            if (!order) {
+                return next(new Error('Order not found!'))
+            }
+            if (order.user.userId.toString() !== req.user._id.toString()) {
+                return next(new Error('Unauthorized!'))
+            }
+
+            // for small files
+            // fs.readFile(invoicePath, (err, data) => {
+            //     if (err) {
+            //         return next(err)
+            //     }
+        
+            //     res.setHeader('Content-Type', 'application/pdf')
+            //     res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"')
+            //     res.send(data)
+            // })
+
+            const file = fs.createReadStream(invoicePath)
+            res.setHeader('Content-Type', 'application/pdf')
+            res.setHeader('Content-Disposition', 'inline; filename="' + invoiceName + '"')
+            file.pipe(res)
+        })
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
 }

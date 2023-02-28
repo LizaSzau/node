@@ -8,11 +8,11 @@ exports.product = (req, res) => {
             .trim()
             .isLength({min: 5})
             .withMessage('Please enter a title (minimum 5 characters).'),
-        body('imageUrl')
-            .exists()
-            .trim()
-            .isURL()
-            .withMessage('Please enter a valid url.'),
+        // body('imageUrl')
+        //     .exists()
+        //     .trim()
+        //     .isURL()
+        //     .withMessage('Please enter a valid url.'),
         body('price')
             .exists()
             .isFloat()

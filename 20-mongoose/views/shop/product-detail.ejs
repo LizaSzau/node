@@ -8,7 +8,7 @@
 
     <main class="detail">
         <h1><%= prod.title %></h1>
-        <img src="<%= prod.imageUrl %>">
+        <img src="/<%= prod.imageUrl %>">
         <div class="card__content">
             <h2 class="product__price">Price: $<%= prod.price %></h2>
             <p class="product__description"><%= prod.description %></p>
@@ -18,7 +18,7 @@
             <% if (isAuthenticated) { %>
                 <%- include('../includes/add-to-cart.ejs', {productId: prod.id}) %>
             <% } %>
-        </div>   
+        </div>
     </main>
 
 <%- include('../includes/end.ejs') %>

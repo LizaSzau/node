@@ -19,5 +19,3 @@ try {
 }
 
 console.log('This works.')
-
-// ASYNC ERRORS

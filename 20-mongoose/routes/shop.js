@@ -22,4 +22,6 @@ router.get('/orders', isAuth, shopController.getOrders)
 
 router.post('/create-order', isAuth, shopController.postCreateOrder)
 
+router.get('/invoice/:orderId', isAuth, shopController.getInvoice)
+
 module.exports = router
