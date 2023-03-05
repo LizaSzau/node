@@ -20,8 +20,12 @@ router.post('/cart-delete-product', isAuth, shopController.postCartDeleteProduct
 
 router.get('/orders', isAuth, shopController.getOrders)
 
-router.post('/create-order', isAuth, shopController.postCreateOrder)
+router.get('/invoice/:orderId', isAuth, shopController.getGenerateInvoice)
 
-router.get('/invoice/:orderId', isAuth, shopController.getInvoice)
+router.get('/checkout', isAuth, shopController.getCheckout)
+
+router.get('/checkout/success', isAuth, shopController.getCheckoutSuccess) // need webhooks and real website, not localhost
+
+router.get('/checkout/cancel', isAuth, shopController.getCheckout)
 
 module.exports = router

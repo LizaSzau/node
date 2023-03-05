@@ -1,6 +1,7 @@
 <%- include('../includes/head.ejs') %>
 
-<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" href="/css/cart.css">
+<link rel="stylesheet" href="/css/forms.css">
 </head>
 <body>
 
@@ -8,6 +9,34 @@
 
     <main>
         <h1><%= pageTitle %></h1>
+        <% if (products.length > 0) { %>
+            <ul class="cart__item-list">
+                <% for (let product of products) { %>
+                    <li class="cart__item">
+                        <h2 class="title"><%= product.productId.title %></h2>
+                        <h2><%= product.quantity %></h2>
+                    </li>
+                <% } %>
+                <li class="cart__item total">
+                    <h1>Total: $<%= total.toLocaleString() %></h1>
+                </li>
+                <li>
+                    <button id="btn-order" class="btn-order">Order Now</button>
+                    <script src="https://js.stripe.com/v3/"></script>
+                    <script>
+                        var stripe = Stripe('pk_test_51KHZl6LLBHpEJ81OZsOuYwmA7fsuiY9bdm5nlLLveuzxAHUfDRqwjNsxIumOFWnrxlBhJB3vqskOxvb190rX7NGJ00sav0Ivle')
+                        var btnOrder = document.getElementById('btn-order')
+                        btnOrder.addEventListener('click', function() {
+                            stripe.redirectToCheckout({
+                                sessionId: '<%= sessionId %>'
+                            })
+                        })
+                    </script>
+                </li>
+            </ul>
+        <% } else { %>
+            <h1>No products found!</h1>
+        <% } %>
     </main>
 
 <%- include('../includes/end.ejs') %>

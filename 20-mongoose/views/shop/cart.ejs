@@ -23,10 +23,13 @@
                     </li>
                 <% } %>
                 <li>
+                    <!--
                     <form action="/create-order" method="POST">
                         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn-order">Order Now</button>
                     </form>
+                    -->
+                    <a href="/checkout"><button type="button" class="btn-order">Checkout</button></a>
                 </li>
             </ul>
 

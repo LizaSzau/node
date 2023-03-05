@@ -1,6 +1,9 @@
 const Product = require("../models/product")
 const { validationResult } = require('express-validator')
 const mongoose = require('mongoose')
+const fileHelper = require('../utils/file')
+
+const ITEMS_PER_PAGE = 3
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/edit-product', {
@@ -87,16 +90,33 @@ exports.postAddProduct = (req, res, next) => {
 }
 
 exports.getAdminProducts = (req, res, next) => {
+    const page = +req.query.page || 1
+    let totalItems
+
     Product
         .find({userId: req.user._id})
-        // .select('title price imageUrl description -_id')
-        .populate('userId', 'name email')
+        .count()
+        .then(totalProducts => {
+            totalItems = totalProducts 
+            return Product
+                .find({userId: req.user._id})
+                // .select('title price imageUrl description -_id')
+                .populate('userId', 'name email')
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+        })
         .then(data => {
-            console.log(data)
             res.render('admin/product-list', {
                 prods: data, 
                 pageTitle: 'Admin Products',
-                path: '/admin/products'
+                path: '/admin/products',
+                totalItems: totalItems,
+                lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1
             })
         })
         .catch(err => {
@@ -174,6 +194,7 @@ exports.postEditProduct = (req, res, next) => {
         product.price = price
         product.description = description
         if (image) {
+            fileHelper.deleteFile(product.imageUrl)
             product.imageUrl = image.path
         }
         return product.save()
@@ -188,18 +209,33 @@ exports.postEditProduct = (req, res, next) => {
     })
 }
 
-exports.postDeleteProduct = (req, res, next) => {
-    const productId = req.body.productId
+exports.deleteProduct = (req, res, next) => {
+    let productId = req.params.productId
 
-    Product
-        //.findByIdAndRemove(productId)
-        .deleteOne({_id: productId, userId: req.user})
+    Product.findById(productId)
+        .then(product => {
+            if (!product) {
+                const error = new Error('Product not found!')
+                error.httpStatusCode = 500
+                return next(error)
+            }
+
+            fileHelper.deleteFile(product.imageUrl)
+
+            return Product
+                //.findByIdAndRemove(productId)
+                .deleteOne({_id: productId, userId: req.user})
+        })
         .then(result => {
-            res.redirect('/admin/products')
+            res.status(200).json({
+                success: true,
+                data: productId
+            })
         })
         .catch(err => {
-            const error = new Error(err)
-            error.httpStatusCode = 500
-            return next(error)
+            res.status(500).json({
+                success: false,
+                errors: ['Deleting products failed!']
+            })
         })
 }

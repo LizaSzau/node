@@ -6,7 +6,7 @@ exports.product = (req, res) => {
             .exists()
             .isString()
             .trim()
-            .isLength({min: 5})
+            .isLength({min: 4})
             .withMessage('Please enter a title (minimum 5 characters).'),
         // body('imageUrl')
         //     .exists()
