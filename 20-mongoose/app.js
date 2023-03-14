@@ -13,7 +13,7 @@ const ErrorController = require ('./controllers/error')
 // const User = require('./models/user')
 const MONGO_DB_URI = 'mongodb+srv://vividdarer:31szaui93@nodeshop.louxudq.mongodb.net/?retryWrites=true&w=majority'
 
-const app = express();
+const app = express()
 
 const store = new MongoDBStore({
     uri: MONGO_DB_URI,
@@ -119,7 +119,6 @@ app.use((error, req, res, next) => {
                 error: error,
                 errorStack: error.stack
             });
-    
 })
 
 mongoose.set('strictQuery', true)
