@@ -9,6 +9,8 @@ router.get('/posts', feedController.getPosts)
 
 router.get('/post/:postId', feedController.getPost)
 
+router.put('/post/:postId', validator.feed(), feedController.putPost)
+
 router.post('/post',  validator.feed(), feedController.postPost)
 
 module.exports = router
