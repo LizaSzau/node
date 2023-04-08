@@ -101,7 +101,7 @@ exports.putPost = (req, res, next) => {
             }
 
             if (imageUrl !== post.imageUrl) {
-                clearImage(post.imageUrl)
+               clearImage(post.imageUrl)
             }
 
             post.title = title
@@ -115,7 +115,30 @@ exports.putPost = (req, res, next) => {
         .catch(err => next(err))
 }
 
+exports.deletePost = (req, res, next) => {
+    const postId = req.params.postId
+
+    Post.findById(postId)
+        .then(post => {
+            if (!post) {
+                const error = new Error('Could not find post!')
+                error.statusCode = 400
+                throw error
+            }
+
+            // check belongs to user
+            clearImage(post.imageUrl)
+
+            return Post.findByIdAndRemove(postId)
+        })
+        .then(result => {
+            res.status(200).json({post: result})
+        })
+        .catch(err => next(err))
+}
+
 const clearImage = filePath => {
-    filePath = path.join(__dirname, '..', filePath)
+
+    filePath = path.join(__dirname, '../images', filePath)
     fs.unlink(filePath, err => console.log(err))
 }
