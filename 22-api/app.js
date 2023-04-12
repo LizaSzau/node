@@ -32,6 +32,7 @@ const feedRoutes = require('./routes/feed')
 const MONGO_DB_URI = 'mongodb+srv://vividdarer:31szaui93@nodeshop.louxudq.mongodb.net/blog?retryWrites=true&w=majority'
 
 // app.use(bodyParser.urlencoded({ extended: false })) // x-www-form-urlencoded <form>
+
 app.use(bodyParser.json()) // application/json
 
 app
