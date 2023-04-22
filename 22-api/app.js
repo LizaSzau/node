@@ -28,6 +28,7 @@ const fileFilter = (req, file, cb) => {
 }
 
 const feedRoutes = require('./routes/feed')
+const userRoutes = require('./routes/user')
 
 const MONGO_DB_URI = 'mongodb+srv://vividdarer:31szaui93@nodeshop.louxudq.mongodb.net/blog?retryWrites=true&w=majority'
 
@@ -51,11 +52,13 @@ app.use((req, res, next) => {
 })
 
 app.use('/feed', feedRoutes)
+app.use('/user', userRoutes)
 
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500
     const message = error.message
-    res.status(status).json({errors: message}) 
+    const data = error.data
+    res.status(status).json({errors: message, data: data}) 
 })
 
 mongoose.set('strictQuery', true)
