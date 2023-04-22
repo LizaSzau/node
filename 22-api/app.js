@@ -4,6 +4,9 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const multer = require('multer')
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express()
 
 const fileStorage = multer.diskStorage({
