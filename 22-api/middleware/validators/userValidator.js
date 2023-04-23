@@ -51,3 +51,13 @@ exports.userLogin = (req, res) => {
             .trim()
        ] 
 }
+
+exports.userStatus = (req, res) => {
+    return [ 
+        body('status')
+            .trim()
+            .not()
+            .isEmpty()
+            .withMessage('Missing status.')
+       ] 
+}

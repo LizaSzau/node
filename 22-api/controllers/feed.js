@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator')
 const Post = require('../models/post')
+const User = require('../models/user')
 const fs = require('fs')
 const path = require('path')
 
@@ -46,6 +47,7 @@ exports.postPost = (req, res, next) => {
     const title = req.body.title
     const content = req.body.content
     const image = req.file
+    let creator
 
     if (!errors.isEmpty()) {
         const error = new Error('Invalid form!')
@@ -66,15 +68,25 @@ exports.postPost = (req, res, next) => {
         title: title,
         content: content,
         imageUrl: imageUrl,
-        creator: { name: 'Pink Coca'}
+        creator: req.userId
     })
 
     post.save()
         .then(result => {
+            newPost = result
+            return User.findById(req.userId)
+        })
+        .then(user => {
+            creator = user
+            user.posts.push(post)
+            return user.save()
+        })
+        .then(result => {
             res.status(201).json({
                 success: true,
                 message: 'Content created!',
-                post: result
+                post: post,
+                creator: {_id: creator._id, name: creator.name}
             })
         })
         .catch(err => next(err))
@@ -112,6 +124,12 @@ exports.putPost = (req, res, next) => {
                 throw error
             }
 
+            if (post.creator.toString() !== req.userId) {
+                const error = new Error('Not authorized!')
+                error.statusCode = 403
+                throw error
+            }
+
             if (imageUrl !== post.imageUrl) {
                clearImage(post.imageUrl)
             }
@@ -138,13 +156,26 @@ exports.deletePost = (req, res, next) => {
                 throw error
             }
 
-            // check belongs to user
+            if (post.creator.toString() !== req.userId) {
+                const error = new Error('Not authorized!')
+                error.statusCode = 403
+                throw error
+            }
+
             clearImage(post.imageUrl)
 
             return Post.findByIdAndRemove(postId)
         })
         .then(result => {
-            res.status(200).json({post: result})
+            return User.findById(req.userId)
+        })
+        .then(user => {
+            user.posts.pull(postId)
+            return user.save()
+            res.status(200).json({message: 'Post deleted.'})
+        })
+        .then(result => {
+            res.status(200).json({message: 'Post deleted.'})
         })
         .catch(err => next(err))
 }

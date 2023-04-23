@@ -65,7 +65,7 @@ exports.postLogin = (req, res, next) => {
             const token = jwt.sign(
                 {
                     email: loadedUser.email,
-                    UseruserId: loadedUser._id.toString()
+                    userId: loadedUser._id.toString()
                 }, 
                 process.env.JWT_SECRET, 
                 { expiresIn: process.env.JWT_EXPIRE}
@@ -74,6 +74,43 @@ exports.postLogin = (req, res, next) => {
             res.status(200).json({
                 token: token,
                 userId: loadedUser._id.toString()
+            })
+        })
+        .catch(err => next(err))
+}
+
+exports.getStatus = (req, res, next) => {
+    User.findById(req.userId)
+        .then(user => {
+            if (!user) {
+                const error = new Error('User not found.')
+                error.statusCode = 404
+                throw error
+            }
+
+            res.status(200).json({status: user.status})
+        })
+        .catch(err => next(err))
+}
+
+exports.patchStatus = (req, res, next) => {
+    const newStatus = req.body.status
+
+    User.findById(req.userId)
+        .then(user => {
+            if (!user) {
+                const error = new Error('User not found.')
+                error.statusCode = 404
+                throw error
+            }
+
+            user.status = newStatus
+            return user.save()
+        })
+        .then(user => {
+            res.status(200).json({
+                message: 'Status changed.',
+                status: user.status
             })
         })
         .catch(err => next(err))
