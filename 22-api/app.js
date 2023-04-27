@@ -50,7 +50,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE')
     res.setHeader('Access-Control-Allow-Headers', 'Content-type, Authorization')
     next()
 })
@@ -73,6 +73,11 @@ mongoose
         { useNewUrlParser: true, useUnifiedTopology: true }
     )
     .then(result => {
-        app.listen(8080)
+        const server = app.listen(8080)
+        const io = require('./socket').init(server)
+
+        io.on('connection', socket => {
+            console.log('Client connceted!')
+        })
     })
-    .catch(err => console.log('err'))
+    .catch(err => console.log(err))
