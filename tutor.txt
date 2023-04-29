@@ -14,3 +14,9 @@ $ npx sequelize-cli db:migrate
 
 $ npx sequelize seed:generate --name create-user
 $ npx sequelize db:seed:all
+
+---------------------------------------------------------------------
+SSL
+---------------------------------------------------------------------
+openssl req -nodes -new -x509 -keyout server.key -out server.cert
+(Common Name (e.g. server FQDN or YOUR name) []: localhost - !!!! IMPORTANT
